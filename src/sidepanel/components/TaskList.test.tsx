@@ -10,6 +10,7 @@ const task: Task = {
     { id: 't2', title: 'todo2', status: 'pending', priority: 'low', dueDate: null, createdAt: '' },
   ]
 }
+const completedTask: Task = { ...task, id: '2', name: 'Done Task', status: 'complete', todos: [] }
 
 describe('TaskList', () => {
   it('shows empty state when no tasks', () => {
@@ -46,5 +47,68 @@ describe('TaskList', () => {
     render(<TaskList tasks={[task]} onSelect={vi.fn()} onUpdate={onUpdate} />)
     fireEvent.click(screen.getByRole('button', { name: /delete/i }))
     expect(onUpdate).toHaveBeenCalledWith([])
+  })
+
+  it('shows pending and complete counts', () => {
+    render(<TaskList tasks={[task, completedTask]} onSelect={vi.fn()} onUpdate={vi.fn()} />)
+    expect(screen.getByText('1 pending · 1 complete')).toBeInTheDocument()
+  })
+
+  it('dims completed task cards', () => {
+    render(<TaskList tasks={[completedTask]} onSelect={vi.fn()} onUpdate={vi.fn()} />)
+    const card = screen.getByText('Done Task').closest('div[class]') as HTMLElement
+    expect(card).toHaveClass('opacity-50')
+  })
+
+  it('toggles task status to complete', () => {
+    const onUpdate = vi.fn()
+    render(<TaskList tasks={[task]} onSelect={vi.fn()} onUpdate={onUpdate} />)
+    fireEvent.click(screen.getByRole('button', { name: /toggle status/i }))
+    expect(onUpdate).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ id: '1', status: 'complete' })])
+    )
+  })
+
+  it('toggles task status back to pending', () => {
+    const onUpdate = vi.fn()
+    render(<TaskList tasks={[completedTask]} onSelect={vi.fn()} onUpdate={onUpdate} />)
+    fireEvent.click(screen.getByRole('button', { name: /toggle status/i }))
+    expect(onUpdate).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ id: '2', status: 'pending' })])
+    )
+  })
+
+  it('shows edit button on each card', () => {
+    render(<TaskList tasks={[task]} onSelect={vi.fn()} onUpdate={vi.fn()} />)
+    expect(screen.getByRole('button', { name: /edit task/i })).toBeInTheDocument()
+  })
+
+  it('enters inline edit mode when edit button clicked', () => {
+    render(<TaskList tasks={[task]} onSelect={vi.fn()} onUpdate={vi.fn()} />)
+    fireEvent.click(screen.getByRole('button', { name: /edit task/i }))
+    expect(screen.getByDisplayValue('My Task')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^save$/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^cancel$/i })).toBeInTheDocument()
+  })
+
+  it('saves edited task name', () => {
+    const onUpdate = vi.fn()
+    render(<TaskList tasks={[task]} onSelect={vi.fn()} onUpdate={onUpdate} />)
+    fireEvent.click(screen.getByRole('button', { name: /edit task/i }))
+    fireEvent.change(screen.getByDisplayValue('My Task'), { target: { value: 'Renamed Task' } })
+    fireEvent.click(screen.getByRole('button', { name: /^save$/i }))
+    expect(onUpdate).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ id: '1', name: 'Renamed Task' })])
+    )
+  })
+
+  it('cancels edit without calling onUpdate', () => {
+    const onUpdate = vi.fn()
+    render(<TaskList tasks={[task]} onSelect={vi.fn()} onUpdate={onUpdate} />)
+    fireEvent.click(screen.getByRole('button', { name: /edit task/i }))
+    fireEvent.change(screen.getByDisplayValue('My Task'), { target: { value: 'Changed' } })
+    fireEvent.click(screen.getByRole('button', { name: /^cancel$/i }))
+    expect(onUpdate).not.toHaveBeenCalled()
+    expect(screen.getByText('My Task')).toBeInTheDocument()
   })
 })
