@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Background -->
+  <rect width="128" height="128" rx="22" fill="#3b82f6"/>
+
+  <!-- Row 1 — complete -->
+  <rect x="20" y="28" width="22" height="22" rx="5" fill="white"/>
+  <polyline points="24,39 29,45 38,33" stroke="#3b82f6" stroke-width="3.5"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="51" y="32" width="57" height="12" rx="5" fill="white" opacity="0.85"/>
+
+  <!-- Row 2 — complete -->
+  <rect x="20" y="59" width="22" height="22" rx="5" fill="white"/>
+  <polyline points="24,70 29,76 38,64" stroke="#3b82f6" stroke-width="3.5"
+            fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="51" y="63" width="45" height="12" rx="5" fill="white" opacity="0.85"/>
+
+  <!-- Row 3 — pending -->
+  <rect x="20" y="90" width="22" height="22" rx="5" fill="none"
+        stroke="white" stroke-width="2.5" opacity="0.5"/>
+  <rect x="51" y="94" width="51" height="12" rx="5" fill="white" opacity="0.35"/>
+</svg>
