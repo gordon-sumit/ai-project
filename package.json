@@ -11,7 +11,8 @@
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "generate-icons": "node scripts/generate-icons.mjs"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,7 @@
   "author": "",
   "license": "ISC",
   "type": "module",
-"bugs": {
+  "bugs": {
     "url": "https://github.com/gordon-sumit/ai-project/issues"
   },
   "homepage": "https://github.com/gordon-sumit/ai-project#readme",
@@ -30,6 +31,7 @@
     "react-dom": "^19.2.5"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -39,6 +41,8 @@
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/coverage-v8": "^4.1.5",
     "jsdom": "^29.1.1",
+    "sharp": "^0.34.5",
+    "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3",
     "vite": "^8.0.10",
     "vitest": "^4.1.5"
