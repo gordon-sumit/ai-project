@@ -5,7 +5,8 @@ const STORAGE_KEY = 'tasks'
 export function getTasks(): Promise<Task[]> {
   return new Promise((resolve) => {
     chrome.storage.local.get([STORAGE_KEY], (result) => {
-      resolve((result[STORAGE_KEY] as Task[]) ?? [])
+      const raw = (result[STORAGE_KEY] as Task[]) ?? []
+      resolve(raw.map((t) => ({ status: 'pending' as const, ...t })))
     })
   })
 }

@@ -5,7 +5,7 @@ import type { Task } from '../../types'
 
 const task: Task = {
   id: '1', name: 'My Task', description: 'desc', dueDate: '2026-06-01',
-  createdAt: '2026-05-06T00:00:00.000Z', todos: [
+  status: 'pending', createdAt: '2026-05-06T00:00:00.000Z', todos: [
     { id: 't1', title: 'todo', status: 'complete', priority: 'high', dueDate: null, createdAt: '' },
     { id: 't2', title: 'todo2', status: 'pending', priority: 'low', dueDate: null, createdAt: '' },
   ]

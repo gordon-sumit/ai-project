@@ -12,6 +12,7 @@ export interface Task {
   name: string
   description: string
   dueDate: string | null
+  status: 'pending' | 'complete'
   createdAt: string
   todos: Todo[]
 }

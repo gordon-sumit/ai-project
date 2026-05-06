@@ -7,6 +7,7 @@ const sampleTask: Task = {
   name: 'Test Task',
   description: 'desc',
   dueDate: '2026-06-01',
+  status: 'pending',
   createdAt: '2026-05-06T00:00:00.000Z',
   todos: [],
 }
