@@ -56,6 +56,10 @@ export default function TodoList({ task, tasks, onBack, onUpdate }: Props) {
     updateTask({ todos: task.todos.filter((t) => t.id !== id) })
   }
 
+  function editTodo(id: string, patch: Pick<Todo, 'title' | 'priority' | 'dueDate'>) {
+    updateTask({ todos: task.todos.map((t) => t.id === id ? { ...t, ...patch } : t) })
+  }
+
   function saveTaskEdits() {
     updateTask({ name, description, dueDate: dueDate || null })
     setEditingTask(false)
@@ -65,42 +69,48 @@ export default function TodoList({ task, tasks, onBack, onUpdate }: Props) {
 
   return (
     <div>
-      <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6', marginBottom: '8px', padding: 0 }}>
+      <button onClick={onBack} className="bg-transparent border-none cursor-pointer text-blue-500 mb-2 p-0">
         ← Back
       </button>
 
       {editingTask ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' }}>
-          <input value={name} onChange={(e) => setName(e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid #d1d5db', fontWeight: 600 }} />
-          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" style={{ padding: '6px', borderRadius: '4px', border: '1px solid #d1d5db' }} />
-          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid #d1d5db' }} />
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={saveTaskEdits} style={{ padding: '4px 10px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Save</button>
-            <button onClick={() => setEditingTask(false)} style={{ padding: '4px 10px', background: '#e5e7eb', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Cancel</button>
+        <div className="flex flex-col gap-1.5 mb-3">
+          <input value={name} onChange={(e) => setName(e.target.value)} className="p-1.5 rounded border border-gray-300 font-semibold" />
+          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" className="p-1.5 rounded border border-gray-300" />
+          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="p-1.5 rounded border border-gray-300" />
+          <div className="flex gap-2">
+            <button onClick={saveTaskEdits} className="px-2.5 py-1 bg-blue-500 text-white border-none rounded cursor-pointer">Save</button>
+            <button onClick={() => setEditingTask(false)} className="px-2.5 py-1 bg-gray-200 border-none rounded cursor-pointer">Cancel</button>
           </div>
         </div>
       ) : (
-        <div style={{ marginBottom: '12px', cursor: 'pointer' }} onClick={() => setEditingTask(true)}>
-          <h2 style={{ margin: '0 0 4px 0', fontSize: '18px' }}>{task.name}</h2>
-          {task.description && <p style={{ margin: '0 0 4px 0', color: '#4b5563', fontSize: '13px' }}>{task.description}</p>}
-          {task.dueDate && <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>Due: {task.dueDate}</p>}
+        <div className="mb-3 cursor-pointer" onClick={() => setEditingTask(true)}>
+          <h2 className="m-0 mb-1 text-lg">{task.name}</h2>
+          {task.description && <p className="m-0 mb-1 text-gray-600 text-[13px]">{task.description}</p>}
+          {task.dueDate && <p className="m-0 text-xs text-gray-500">Due: {task.dueDate}</p>}
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', flexWrap: 'wrap' }}>
+      <div className="flex gap-1.5 mb-2 flex-wrap">
         {(['all', 'pending', 'complete'] as Filter[]).map((f) => (
-          <button key={f} onClick={() => setFilter(f)} style={{ padding: '4px 10px', border: '1px solid #d1d5db', borderRadius: '9999px', background: filter === f ? '#3b82f6' : '#fff', color: filter === f ? '#fff' : '#374151', cursor: 'pointer', textTransform: 'capitalize' }}>
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`px-2.5 py-1 border border-gray-300 rounded-full cursor-pointer capitalize ${
+              filter === f ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'
+            }`}
+          >
             {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
           </button>
         ))}
-        <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} style={{ marginLeft: 'auto', padding: '4px 8px', borderRadius: '4px', border: '1px solid #d1d5db', fontSize: '12px' }}>
+        <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)} className="ml-auto px-2 py-1 rounded border border-gray-300 text-xs">
           <option value="dueDate">Sort: Due Date</option>
           <option value="priority">Sort: Priority</option>
         </select>
       </div>
 
       {!showForm && (
-        <button onClick={() => setShowForm(true)} style={{ padding: '6px 12px', background: '#10b981', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', marginBottom: '8px' }}>
+        <button onClick={() => setShowForm(true)} className="px-3 py-1.5 bg-emerald-500 text-white border-none rounded cursor-pointer mb-2">
           Add Todo
         </button>
       )}
@@ -108,11 +118,11 @@ export default function TodoList({ task, tasks, onBack, onUpdate }: Props) {
       {showForm && <TodoForm onAdd={addTodo} onCancel={() => setShowForm(false)} />}
 
       {visible.length === 0 && !showForm && (
-        <p style={{ color: '#6b7280', textAlign: 'center', marginTop: '24px' }}>No todos yet — add one!</p>
+        <p className="text-gray-500 text-center mt-6">No todos yet — add one!</p>
       )}
 
       {visible.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} onDelete={deleteTodo} />
+        <TodoItem key={todo.id} todo={todo} onToggle={toggleTodo} onDelete={deleteTodo} onEdit={editTodo} />
       ))}
     </div>
   )

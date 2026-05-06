@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
 import TodoList from './TodoList'
 import type { Task, Todo } from '../../types'
@@ -52,6 +52,22 @@ describe('TodoList', () => {
       expect.arrayContaining([
         expect.objectContaining({
           todos: expect.arrayContaining([expect.objectContaining({ title: 'New todo' })])
+        })
+      ])
+    )
+  })
+
+  it('edits a todo via the inline edit form', () => {
+    const onUpdate = vi.fn()
+    render(<TodoList task={task} tasks={allTasks} onBack={vi.fn()} onUpdate={onUpdate} />)
+    const alphaRow = screen.getByText('Alpha').closest('div') as HTMLElement
+    fireEvent.click(within(alphaRow).getByRole('button', { name: /edit todo/i }))
+    fireEvent.change(screen.getByLabelText('edit todo title'), { target: { value: 'Edited Alpha' } })
+    fireEvent.click(screen.getByRole('button', { name: /^save$/i }))
+    expect(onUpdate).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({
+          todos: expect.arrayContaining([expect.objectContaining({ id: 't1', title: 'Edited Alpha' })])
         })
       ])
     )
