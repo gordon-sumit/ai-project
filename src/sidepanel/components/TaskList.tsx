@@ -122,7 +122,7 @@ export default function TaskList({ tasks, onSelect, onUpdate }: Props) {
             onClick={() => onSelect(task.id)}
             className={`border border-gray-200 rounded-md p-3 mb-2 cursor-pointer flex justify-between items-start ${task.status === 'complete' ? 'opacity-50' : ''}`}
           >
-            <div>
+            <div className='flex gap-2'>
               <button
                 aria-label="toggle status"
                 onClick={(e) => toggleStatus(task.id, e)}

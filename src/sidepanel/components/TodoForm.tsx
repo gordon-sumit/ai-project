@@ -25,18 +25,18 @@ export default function TodoForm({ onAdd, onCancel }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '8px 0' }}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 my-2">
       <input
         placeholder="Todo title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
-        style={{ padding: '6px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+        className="p-1.5 rounded border border-gray-300"
       />
       <select
         value={priority}
         onChange={(e) => setPriority(e.target.value as Todo['priority'])}
-        style={{ padding: '6px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+        className="p-1.5 rounded border border-gray-300"
       >
         <option value="high">High</option>
         <option value="medium">Medium</option>
@@ -46,13 +46,13 @@ export default function TodoForm({ onAdd, onCancel }: Props) {
         type="date"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
-        style={{ padding: '6px', borderRadius: '4px', border: '1px solid #d1d5db' }}
+        className="p-1.5 rounded border border-gray-300"
       />
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <button type="submit" style={{ padding: '6px 12px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+      <div className="flex gap-2">
+        <button type="submit" className="px-3 py-1.5 bg-blue-500 text-white border-none rounded cursor-pointer">
           Save Todo
         </button>
-        <button type="button" onClick={onCancel} style={{ padding: '6px 12px', background: '#e5e7eb', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+        <button type="button" onClick={onCancel} className="px-3 py-1.5 bg-gray-200 border-none rounded cursor-pointer">
           Cancel
         </button>
       </div>

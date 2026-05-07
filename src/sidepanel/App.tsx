@@ -27,11 +27,11 @@ export default function App() {
   const activeTask = tasks.find((t) => t.id === activeTaskId) ?? null
 
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: '12px', width: '100%' }}>
+    <div className="font-sans p-3 w-full">
       {error && (
-        <div style={{ background: '#fee2e2', color: '#991b1b', padding: '8px', borderRadius: '4px', marginBottom: '8px' }}>
-          {error}
-          <button onClick={() => setError(null)} style={{ float: 'right', background: 'none', border: 'none', cursor: 'pointer' }}>✕</button>
+        <div className="flex justify-between items-center bg-red-100 text-red-800 p-2 rounded mb-2">
+          <span>{error}</span>
+          <button onClick={() => setError(null)} className="bg-transparent border-none cursor-pointer">✕</button>
         </div>
       )}
       {activeTask ? (

@@ -7,6 +7,9 @@
   "side_panel": {
     "default_path": "src/sidepanel/index.html"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_title": "Open Task Manager"
   },
